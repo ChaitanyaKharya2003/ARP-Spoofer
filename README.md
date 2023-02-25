@@ -1,6 +1,10 @@
 # ARP-Spoofer
  Python 2.7 Script for ARP Spoofing a specific target
 
+Run in Linux Command Line as:
+python arpspoof.py -t <Target IP>
+OR
+python3 arpspoof.py -t <Target IP>
 
 For Python 3 compatibility:
 1. Comment out lines 66, 67.
