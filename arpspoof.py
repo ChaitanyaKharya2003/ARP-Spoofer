@@ -3,8 +3,20 @@
 import re
 import scapy.all as scapy
 import subprocess
+import optparse
 import time
 import sys
+
+def get_arguments():
+    parser = optparse.OptionParser()
+
+    parser.add_option("-t", "--target", dest="target", help="The IP of target machine.")
+
+    (options, arguments) = parser.parse_args()
+    if not options.target:
+        parser.error("[.] Please specify a target IP, use --help for more info")
+    return options
+
 
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
@@ -39,9 +51,10 @@ def enable_ipv4():
 
 
 
+options = get_arguments()
 router_ip = get_router()
 sent_count = 0
-target_ip = "192.168.196.138"
+target_ip = options.target
 print(router_ip)
 enable_ipv4()
 try:
