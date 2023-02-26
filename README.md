@@ -9,8 +9,8 @@ OR
 python3 arpspoof.py
 
 For Python 3 compatibility:
-1. Comment out lines 66, 67.
-2. Uncomment line 70
+1. Comment out lines 60, 61.
+2. Uncomment line 64
 
 Python Libraries used:
 1. re

